@@ -1,0 +1,27 @@
+{% macro filter_form(consumers, cid, start='', end='', dates=True) %}
+<form class="inline noprint" method="get">
+  <label>Consumer
+    <select name="consumer_id"><option value="">All consumers</option>
+    {% for c in consumers %}<option value="{{ c.consumer_id }}" {{ 'selected' if cid==c.consumer_id }}>{{ c.name }}</option>{% endfor %}
+    </select></label>
+  {% if dates %}<label>From<input type="date" name="start" value="{{ start }}"></label>
+  <label>To<input type="date" name="end" value="{{ end }}"></label>{% endif %}
+  <button>Apply</button>
+</form>
+{% endmacro %}
+
+{% macro kpis(s) %}
+{% if s %}
+<div class="grid g4">
+  <div class="card kpi"><div class="v">{{ '{:,.0f}'.format(s.total_units) }}</div><div class="l">Total units (kWh)</div></div>
+  <div class="card kpi"><div class="v">{{ s.avg_daily }}</div><div class="l">Average per day</div></div>
+  <div class="card kpi"><div class="v">{{ s.max_day_units }}</div><div class="l">Highest day ({{ s.max_day }})</div></div>
+  <div class="card kpi"><div class="v">{{ '{:,.0f}'.format(s.last_month_units) }}</div><div class="l">{{ s.last_month }} (latest month)</div></div>
+</div>
+{% else %}<div class="card muted">No readings found for this selection. Add consumers and upload meter data first.</div>{% endif %}
+{% endmacro %}
+
+{% macro alert_list(alerts) %}
+{% for a in alerts %}<div class="alert {{ a.level }}"><strong>{{ a.consumer }}:</strong> {{ a.message }}</div>
+{% else %}<p class="muted">No usage alerts. Consumption is within expected ranges.</p>{% endfor %}
+{% endmacro %}

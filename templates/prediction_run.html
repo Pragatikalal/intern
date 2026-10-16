@@ -1,0 +1,26 @@
+{% extends "base.html" %}{% block title %}Forecast{% endblock %}
+{% block content %}
+{% set first = run[0] %}
+<h1>Forecast &ndash; {{ first.name }}</h1>
+<p class="muted">Run <code>{{ run_id }}</code> &middot; model <strong>{{ first.model_name }}</strong> &middot; created {{ first.created_at }} UTC
+&middot; test RMSE {{ first.rmse }}, MAE {{ first.mae }}, R&sup2; {{ first.r2 }}</p>
+<div class="card"><h2>Last 60 days and forecast (shaded band = 95% interval)</h2><div style="height:340px"><canvas id="fc"></canvas></div></div>
+{% if comparison %}<div class="card scroll"><h2>Model comparison (hold-out test set)</h2><table>
+<tr><th>Model</th><th class="n">MAE</th><th class="n">MSE</th><th class="n">RMSE</th><th class="n">R&sup2;</th></tr>
+{% for m in comparison %}<tr class="{{ 'best' if m.best }}"><td>{{ m.model }}{{ ' (saved)' if m.best }}</td><td class="n">{{ m.mae }}</td><td class="n">{{ m.mse }}</td><td class="n">{{ m.rmse }}</td><td class="n">{{ m.r2 }}</td></tr>{% endfor %}
+</table></div>{% endif %}
+<div class="card scroll"><h2>Predicted units</h2><table><tr><th>Date</th><th class="n">Predicted</th><th class="n">Lower</th><th class="n">Upper</th></tr>
+{% for r in run %}<tr><td>{{ r.prediction_date }}</td><td class="n">{{ r.predicted_units }}</td><td class="n">{{ r.lower_bound }}</td><td class="n">{{ r.upper_bound }}</td></tr>{% endfor %}</table></div>
+{% endblock %}
+{% block scripts %}<script>
+const H = {{ history|tojson }}, F = {{ run|map(attribute='prediction_date')|list|tojson }},
+      P = {{ run|map(attribute='predicted_units')|list|tojson }}, L = {{ run|map(attribute='lower_bound')|list|tojson }}, U = {{ run|map(attribute='upper_bound')|list|tojson }};
+window.addEventListener("load", () => {
+  const labels = H.labels.concat(F), pad = new Array(H.labels.length).fill(null);
+  draw("fc", "line", labels, [
+    {label: "Actual", data: H.values.concat(new Array(F.length).fill(null))},
+    {label: "Forecast", data: pad.concat(P), borderDash: [6, 4]},
+    {label: "Upper", data: pad.concat(U), borderWidth: 0, backgroundColor: "rgba(233,160,59,.18)", borderColor: "transparent", fill: "+1"},
+    {label: "Lower", data: pad.concat(L), borderWidth: 0, borderColor: "transparent"}
+  ]);
+});</script>{% endblock %}

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="csrf" content="{{ csrf_token }}">
+<title>{% block title %}Energy Analytics{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/charts.js') }}" defer></script>
+</head><body>
+{% set ep = request.endpoint or '' %}
+<nav>
+  <span class="brand">&#9889; EnergyIQ</span>
+  {% if g.user %}
+  <a href="{{ url_for('main.dashboard') }}" class="{{ 'on' if ep=='main.dashboard' }}">Dashboard</a>
+  <a href="{{ url_for('main.consumers') }}" class="{{ 'on' if ep=='main.consumers' }}">Consumers</a>
+  <a href="{{ url_for('main.upload') }}" class="{{ 'on' if ep=='main.upload' }}">Upload</a>
+  <a href="{{ url_for('main.analytics_page') }}" class="{{ 'on' if ep=='main.analytics_page' }}">Analytics</a>
+  <a href="{{ url_for('main.predict') }}" class="{{ 'on' if ep=='main.predict' }}">Prediction</a>
+  <a href="{{ url_for('main.history') }}" class="{{ 'on' if ep.startswith('main.history') }}">History</a>
+  <a href="{{ url_for('main.reports') }}" class="{{ 'on' if ep=='main.reports' }}">Reports</a>
+  <span class="sp"></span>
+  <span style="color:#fff;opacity:.85">{{ g.user.username }} ({{ g.user.role }})</span>
+  <a href="{{ url_for('auth.logout') }}">Logout</a>
+  {% endif %}
+</nav>
+<main>
+  {% for cat, msg in get_flashed_messages(with_categories=true) %}<div class="flash {{ cat }}">{{ msg }}</div>{% endfor %}
+  {% block content %}{% endblock %}
+</main>
+{% block scripts %}{% endblock %}
+</body></html>

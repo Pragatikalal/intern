@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% from "macros.html" import filter_form %}{% block title %}History{% endblock %}
+{% block content %}
+<h1>Prediction History</h1>
+{{ filter_form(consumers, cid, dates=False) }}<br>
+<div class="card scroll"><table>
+<tr><th>Created (UTC)</th><th>Consumer</th><th>Model</th><th>Period</th><th class="n">Days</th><th class="n">Total units</th><th class="n">RMSE</th><th class="n">R&sup2;</th><th>By</th><th></th></tr>
+{% for r in runs %}<tr><td>{{ r.created_at }}</td><td>{{ r.name }}</td><td>{{ r.model_name }}</td><td>{{ r.start_date }} &rarr; {{ r.end_date }}</td>
+<td class="n">{{ r.days }}</td><td class="n">{{ r.total_units }}</td><td class="n">{{ r.rmse }}</td><td class="n">{{ r.r2 }}</td><td>{{ r.username or '' }}</td>
+<td><a href="{{ url_for('main.history_run', run_id=r.run_id) }}">Open</a></td></tr>
+{% else %}<tr><td colspan="10" class="muted">No forecasts yet. Run one from the Prediction page.</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

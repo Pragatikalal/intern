@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% from "macros.html" import filter_form, kpis, alert_list %}{% block title %}Reports{% endblock %}
+{% block content %}
+<h1>Energy Report</h1>
+{{ filter_form(consumers, cid, start, end) }}
+<p class="noprint"><a class="btn" href="{{ url_for('main.reports_download', **request.args) }}">Download CSV</a>
+<button class="sec" onclick="window.print()">Print / Save as PDF</button></p>
+{{ kpis(summary) }}
+<div class="card scroll"><h2>Monthly consumption by consumer (units)</h2>
+{% if pivot is not none and not pivot.empty %}<table><tr><th>Consumer</th>{% for c in pivot.columns %}<th class="n">{{ c }}</th>{% endfor %}</tr>
+{% for name, row in pivot.iterrows() %}<tr><td>{{ name }}</td>{% for v in row %}<td class="n">{{ '{:,.0f}'.format(v) }}</td>{% endfor %}</tr>{% endfor %}</table>
+{% else %}<p class="muted">No data for this selection.</p>{% endif %}</div>
+<div class="card"><h2>Estimated usage alerts</h2>{{ alert_list(alerts) }}</div>
+<div class="card scroll"><h2>Consumer comparison</h2><table>
+<tr><th>Consumer</th><th>Category</th><th class="n">Total</th><th class="n">Avg/day</th><th class="n">vs category</th></tr>
+{% for r in comparison %}<tr><td>{{ r.name }}</td><td>{{ r.category }}</td><td class="n">{{ '{:,.0f}'.format(r.total) }}</td><td class="n">{{ r.avg_daily }}</td><td class="n">{{ '%+.1f'|format(r.vs_category_pct) }}%</td></tr>{% endfor %}</table></div>
+{% endblock %}

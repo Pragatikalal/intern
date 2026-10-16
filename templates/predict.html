@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block title %}Prediction{% endblock %}
+{% block content %}
+<h1>Demand Prediction</h1>
+<div class="card"><p class="muted">Trains four candidate regressors (Linear, Ridge, Random Forest, Gradient Boosting) on weekday/month cycles, 1-day and 7-day lags and the 7-day rolling mean, tests them on the most recent 20% of days, keeps the best by RMSE, then forecasts forward. Requires at least 45 days of data.</p>
+<form class="inline" method="post"><input type="hidden" name="_csrf" value="{{ csrf_token }}">
+<label>Consumer<select name="consumer_id" required>{% for c in consumers %}<option value="{{ c.consumer_id }}">{{ c.name }}</option>{% endfor %}</select></label>
+<label>Horizon (days)<input type="number" name="horizon" value="30" min="1" max="90"></label>
+<button onclick="this.textContent='Training...'">Train &amp; forecast</button></form></div>
+{% endblock %}

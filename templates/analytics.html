@@ -1,0 +1,31 @@
+{% extends "base.html" %}{% from "macros.html" import filter_form, kpis %}{% block title %}Analytics{% endblock %}
+{% block content %}
+<h1>Consumption &amp; Peak Usage Analytics</h1>
+{{ filter_form(consumers, cid, start, end) }}<br>
+{{ kpis(summary) }}
+<div class="grid g2">
+  <div class="card"><h2>Daily consumption</h2><div style="height:300px"><canvas id="daily"></canvas></div></div>
+  <div class="card"><h2>Monthly consumption</h2><div style="height:300px"><canvas id="monthly"></canvas></div></div>
+</div>
+{% if peaks %}
+<div class="grid g2">
+  {% if peaks.hourly %}<div class="card"><h2>Hourly load profile</h2><div style="height:300px"><canvas id="hourly"></canvas></div></div>{% endif %}
+  <div class="card"><h2>Average by weekday</h2><div style="height:300px"><canvas id="dow"></canvas></div></div>
+</div>
+<div class="grid g2">
+<div class="card"><h2>Peak usage</h2>
+  <p>{% if peaks.peak_hours %}Peak hours: <strong>{{ peaks.peak_hours|join(', ') }}</strong><br>{% else %}<span class="muted">Peak hours need hourly (timestamped) readings.</span><br>{% endif %}
+  Peak weekday: <strong>{{ peaks.peak_weekday }}</strong> &middot; Peak month (seasonal): <strong>{{ peaks.peak_month }}</strong><br>
+  Peak-day threshold (mean + 1.5&sigma;): <strong>{{ peaks.threshold }}</strong> units</p>
+  <table><tr><th>Peak day</th><th class="n">Units</th></tr>
+  {% for d in peaks.peak_days %}<tr><td>{{ d.date }}</td><td class="n">{{ d.units }}</td></tr>{% else %}<tr><td colspan="2" class="muted">No days exceeded the threshold.</td></tr>{% endfor %}</table></div>
+<div class="card"><h2>Diagnostic insights (why)</h2>
+  {% for i in insights %}<p>&bull; {{ i }}</p>{% else %}<p class="muted">At least 14 days of data are needed.</p>{% endfor %}</div>
+</div>
+{% endif %}
+<div class="card scroll"><h2>Consumer comparison</h2><table>
+<tr><th>Consumer</th><th>Category</th><th class="n">Total</th><th class="n">Avg/day</th><th class="n">Peak day</th><th class="n">Category avg</th><th class="n">vs category</th></tr>
+{% for r in comparison %}<tr><td>{{ r.name }}</td><td>{{ r.category }}</td><td class="n">{{ '{:,.0f}'.format(r.total) }}</td><td class="n">{{ r.avg_daily }}</td><td class="n">{{ r.peak_daily }}</td><td class="n">{{ r.category_avg }}</td><td class="n">{{ '%+.1f'|format(r.vs_category_pct) }}%</td></tr>{% endfor %}
+</table></div>
+{% endblock %}
+{% block scripts %}<script>window.addEventListener("load",()=>{dailyChart("daily");monthlyChart("monthly");peakCharts("hourly","dow");});</script>{% endblock %}

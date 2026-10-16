@@ -1,0 +1,23 @@
+{% extends "base.html" %}{% block title %}Upload{% endblock %}
+{% block content %}
+<h1>Meter Data Upload</h1>
+<div class="grid g2">
+<div class="card"><h2>Upload CSV</h2>
+<p class="muted">Required columns: <code>meter_no, reading_date, units_consumed</code>. Optional: <code>meter_reading</code>. Dates may be daily (2026-03-01) or hourly (2026-03-01 18:00). Re-uploading a timestamp updates it. Max 10&nbsp;MB.</p>
+<form method="post" enctype="multipart/form-data" class="inline">
+<input type="hidden" name="_csrf" value="{{ csrf_token }}"><input type="file" name="file" accept=".csv" required><button>Upload &amp; validate</button></form>
+{% if report %}<table style="margin-top:1rem">
+<tr><td>Rows in file</td><td class="n">{{ report.total }}</td></tr><tr><td>Imported</td><td class="n">{{ report.imported }}</td></tr>
+<tr><td>Invalid (bad date / negative / non-numeric)</td><td class="n">{{ report.invalid }}</td></tr>
+<tr><td>Unknown meter number</td><td class="n">{{ report.unknown_meter }}</td></tr></table>
+{% if report.unknown_meters %}<p class="muted">Unknown meters: {{ report.unknown_meters|join(', ') }}</p>{% endif %}{% endif %}
+<p class="muted">Readings stored: {{ '{:,}'.format(reading_count) }}</p></div>
+<div class="card"><h2>Manual entry</h2>
+<form method="post" action="{{ url_for('main.reading_add') }}" class="grid"><input type="hidden" name="_csrf" value="{{ csrf_token }}">
+<label>Consumer<select name="consumer_id" required>{% for c in consumers %}<option value="{{ c.consumer_id }}">{{ c.name }} ({{ c.meter_no }})</option>{% endfor %}</select></label>
+<label>Date<input type="date" name="reading_date" required></label>
+<label>Units consumed<input type="number" step="0.01" min="0" name="units_consumed" required></label>
+<label>Meter reading (optional)<input type="number" step="0.01" name="meter_reading"></label>
+<button>Save reading</button></form></div>
+</div>
+{% endblock %}

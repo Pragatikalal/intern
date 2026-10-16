@@ -1,0 +1,41 @@
+Order_ID,Date,Region,Category,Product,Units_Sold,Unit_Price,Sales,Profit,Customer_Rating,Payment_Method
+ORD001,2026-01-05,North,Electronics,Laptop,2,55000,110000,16500,4.7,Card
+ORD002,2026-01-09,South,Furniture,Office Chair,5,6500,32500,5200,4.2,UPI
+ORD003,2026-01-14,East,Clothing,Jacket,8,2200,17600,3520,4.4,Cash
+ORD004,2026-01-20,West,Electronics,Smartphone,4,28000,112000,14560,4.6,UPI
+ORD005,2026-01-27,North,Groceries,Rice Bag,15,1250,18750,2250,4.1,Cash
+ORD006,2026-02-03,South,Electronics,Headphones,10,1800,18000,3600,4.3,Card
+ORD007,2026-02-08,East,Furniture,Study Table,3,8500,25500,3825,4.0,UPI
+ORD008,2026-02-13,West,Clothing,Shoes,7,3200,22400,4480,4.5,Card
+ORD009,2026-02-19,North,Groceries,Cooking Oil,20,750,15000,1800,3.9,Cash
+ORD010,2026-02-25,South,Electronics,Tablet,3,24000,72000,10080,4.6,EMI
+ORD011,2026-03-02,East,Clothing,Jeans,12,1800,21600,4320,4.2,UPI
+ORD012,2026-03-07,West,Furniture,Bookshelf,4,7200,28800,4608,4.1,Card
+ORD013,2026-03-12,North,Electronics,Smartwatch,6,8500,51000,8670,4.8,UPI
+ORD014,2026-03-18,South,Groceries,Dry Fruits,9,1100,9900,1485,4.4,Cash
+ORD015,2026-03-24,East,Electronics,Printer,2,16500,33000,4950,4.0,Card
+ORD016,2026-04-01,West,Clothing,Shirt,14,1400,19600,3920,4.3,UPI
+ORD017,2026-04-06,North,Furniture,Sofa,2,38000,76000,9120,4.5,EMI
+ORD018,2026-04-11,South,Electronics,Keyboard,11,2200,24200,4840,4.1,Card
+ORD019,2026-04-17,East,Groceries,Tea Pack,25,420,10500,1575,4.6,Cash
+ORD020,2026-04-23,West,Electronics,Monitor,5,14500,72500,11600,4.7,UPI
+ORD021,2026-05-04,North,Clothing,Kurta,10,1600,16000,3200,4.2,Cash
+ORD022,2026-05-09,South,Furniture,Wardrobe,2,32000,64000,8320,4.4,EMI
+ORD023,2026-05-15,East,Electronics,Mouse,18,900,16200,4050,4.3,UPI
+ORD024,2026-05-21,West,Groceries,Flour Bag,22,600,13200,1584,4.0,Cash
+ORD025,2026-05-28,North,Electronics,Speaker,7,4800,33600,6048,4.5,Card
+ORD026,2026-06-03,South,Clothing,Dress,6,3500,21000,4200,4.7,UPI
+ORD027,2026-06-08,East,Furniture,Bed,2,42000,84000,10920,4.6,EMI
+ORD028,2026-06-14,West,Electronics,Power Bank,13,1500,19500,3900,4.1,Card
+ORD029,2026-06-20,North,Groceries,Spices Pack,18,550,9900,1386,4.3,Cash
+ORD030,2026-06-26,South,Electronics,Camera,2,46000,92000,13800,4.8,Card
+ORD031,2026-07-02,East,Clothing,T-Shirt,16,900,14400,2880,4.0,UPI
+ORD032,2026-07-08,West,Furniture,Dining Table,2,29000,58000,7540,4.5,EMI
+ORD033,2026-07-13,North,Electronics,Router,9,2800,25200,5040,4.4,Card
+ORD034,2026-07-19,South,Groceries,Coffee Pack,14,680,9520,1428,4.6,Cash
+ORD035,2026-07-25,East,Electronics,Air Conditioner,2,39000,78000,10920,4.7,EMI
+ORD036,2026-08-01,West,Clothing,Saree,5,4200,21000,4410,4.8,UPI
+ORD037,2026-08-07,North,Furniture,Recliner,3,22000,66000,8580,4.3,Card
+ORD038,2026-08-12,South,Electronics,Webcam,12,2400,28800,5760,4.2,UPI
+ORD039,2026-08-18,East,Groceries,Sugar Bag,20,520,10400,1248,3.8,Cash
+ORD040,2026-08-24,West,Electronics,Television,3,52000,156000,21840,4.9,EMI

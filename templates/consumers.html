@@ -1,0 +1,25 @@
+{% extends "base.html" %}{% block title %}Consumers{% endblock %}
+{% block content %}
+<h1>Consumer Management</h1>
+{% if g.user.role == 'admin' %}
+<div class="card"><h2>{{ 'Edit consumer' if edit else 'Add consumer' }}</h2>
+<form class="inline" method="post" action="{{ url_for('main.consumer_save') }}">
+  <input type="hidden" name="_csrf" value="{{ csrf_token }}">
+  {% if edit %}<input type="hidden" name="consumer_id" value="{{ edit.consumer_id }}">{% endif %}
+  <label>Name<input name="name" required value="{{ edit.name if edit }}"></label>
+  <label>Address<input name="address" value="{{ edit.address if edit and edit.address }}"></label>
+  <label>Meter no.<input name="meter_no" required value="{{ edit.meter_no if edit }}"></label>
+  <label>Category<select name="category">{% for c in categories %}<option {{ 'selected' if edit and edit.category==c }}>{{ c }}</option>{% endfor %}</select></label>
+  <button>{{ 'Update' if edit else 'Add' }}</button>
+  {% if edit %}<a class="btn sec" href="{{ url_for('main.consumers') }}">Cancel</a>{% endif %}
+</form></div>
+{% else %}<p class="muted">Only administrators can add, edit or delete consumers.</p>{% endif %}
+<div class="card scroll"><table>
+<tr><th>Name</th><th>Address</th><th>Meter no.</th><th>Category</th><th></th></tr>
+{% for c in consumers %}<tr><td>{{ c.name }}</td><td>{{ c.address or '' }}</td><td>{{ c.meter_no }}</td><td><span class="badge">{{ c.category }}</span></td>
+<td>{% if g.user.role=='admin' %}<a href="{{ url_for('main.consumers', edit=c.consumer_id) }}">Edit</a>
+<form method="post" action="{{ url_for('main.consumer_delete', consumer_id=c.consumer_id) }}" style="display:inline" onsubmit="return confirm('Delete this consumer and all their readings and predictions?')">
+<input type="hidden" name="_csrf" value="{{ csrf_token }}"><button class="del" style="padding:.15rem .5rem">Delete</button></form>{% endif %}</td></tr>
+{% else %}<tr><td colspan="5" class="muted">No consumers yet.</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

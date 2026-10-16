@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% from "macros.html" import filter_form, kpis, alert_list %}
+{% block content %}
+<h1>Consumption Dashboard</h1>
+{{ filter_form(consumers, cid, dates=False) }}<br>
+{{ kpis(summary) }}
+<div class="grid g2">
+  <div class="card"><h2>Monthly consumption</h2><div style="height:300px"><canvas id="monthly"></canvas></div></div>
+  <div class="card"><h2>Consumer comparison (avg units/day)</h2><div style="height:300px"><canvas id="compare"></canvas></div></div>
+</div>
+<div class="card"><h2>Estimated usage alerts</h2>{{ alert_list(alerts) }}</div>
+{% endblock %}
+{% block scripts %}<script>window.addEventListener("load",()=>{monthlyChart("monthly");comparisonChart("compare");});</script>{% endblock %}
